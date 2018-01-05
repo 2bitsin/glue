@@ -11,27 +11,75 @@ class Registry
 			$arr[$k] = (string)$v;
 		return $arr;
 	}
-
-	protected function feature_add_enum($root, &$dest, $name)
-	{
-		$enum = $root->xpath("/registry/enums/enum[@name='$name']")[0];
-		$type = null;
-		$group = null;
-		extract(Registry::attr_to_array($enum->xpath('..')[0]->attributes()), EXTR_OVERWRITE);
-		extract(Registry::attr_to_array($enum->attributes()), EXTR_OVERWRITE);
-		$dest['enums'][$name] = ['value' => $value, 'namespace' => $namespace, 'type' => $type, 'group' => $group];
-	}
-	protected function feature_add_proto($root, &$dest, $name)
-	{
-		$dest['protos'][$name] = true;
-	}
 	protected function feature_add_type($root, &$dest, $name)
 	{
 		$dest['types'][$name] = true;
 	}
 
+	protected function parse_enums($root)
+	{
+		$this->enums = [];
+		foreach ($root->xpath('/registry/enums') as $_group)
+		{
+			extract(Registry::attr_to_array($_group->attributes()), EXTR_OVERWRITE);
+			foreach ($_group->xpath('enum') as $enum)
+			{
+				extract(Registry::attr_to_array($enum->attributes()), EXTR_OVERWRITE);
+				$this->enums[$name] = ['value' => $value, 'namespace' => $namespace, 'type' => $type, 'group' => $group];
+			}
+		}
+	}
+
+	protected function parse_protos($root)
+	{
+		$value_or = function($v, $d) { return count($v) > 0 ? (string)$v[0] : $d; };
+
+		$this->protos = [];
+		foreach ($root->xpath('/registry/commands/command') as $_command)
+		{
+			extract(Registry::attr_to_array($_command->attributes()), EXTR_OVERWRITE);
+			$_proto = $_command->xpath('proto')[0];
+			$_proto_full_type = dom_import_simplexml($_proto)->textContent;
+			$_proto_name = (string)$_proto->xpath('name')[0];
+			$_proto_full_type = str_replace($_proto_name, '', $_proto_full_type);
+			$_proto_base_type = $value_or($_proto->xpath('ptype'), 'void');
+			$_proto_arguments = [];
+
+			$group = '';
+			extract(Registry::attr_to_array($_proto->attributes()), EXTR_OVERWRITE);
+
+			foreach ($_command->xpath('param') as $_param)
+			{
+				$length = '';
+				extract(Registry::attr_to_array($_param->attributes()), EXTR_OVERWRITE);
+
+				$_param_full_type = (string)dom_import_simplexml($_param)->textContent;
+				$_param_name = (string)$_param->xpath('name')[0];
+				$_param_base_type = $value_or($_param->xpath('ptype'), 'void');
+				$_param_full_type = str_replace($_param_name, '', $_param_full_type);
+
+				$_proto_arguments[] = [
+					'name' 			=> trim($_param_name),
+					'full_type' => trim($_param_full_type),
+					'base_type' => trim($_param_base_type),
+					'length' 		=> trim($length)
+				];
+			}
+			$this->protos[$_proto_name] = [
+				'group' 		=> trim($group),
+				'name'  		=> trim($_proto_name),
+				'full_type' => trim($_proto_full_type),
+				'base_type' => trim($_proto_base_type),
+				'arguments' => $_proto_arguments
+			];
+		}
+	}
+
 	protected function parse_features($root)
 	{
+		$feature_add_enum 	= function (&$dest, $name) { $dest['enums'  ][$name] = $this->enums  [$name]; };
+		$feature_add_proto 	= function (&$dest, $name) { $dest['protos' ][$name] = $this->protos [$name]; };
+
 		$this->features = [];
 
 		$api_profiles = [];
@@ -56,9 +104,9 @@ class Registry
 						foreach ($profiles as $profile_idx => $_)
 						{
 							foreach ($oper->xpath('enum') as $enum)
-								$this->feature_add_enum($root, $profiles[$profile_idx], (string)$enum->attributes()['name']);
+								$feature_add_enum($profiles[$profile_idx], (string)$enum->attributes()['name']);
 							foreach ($oper->xpath('command') as $proto)
-								$this->feature_add_proto($root, $profiles[$profile_idx], (string)$proto->attributes()['name']);
+								$feature_add_proto($profiles[$profile_idx], (string)$proto->attributes()['name']);
 							foreach ($oper->xpath('type') as $type)
 								$this->feature_add_type($root, $profiles[$profile_idx], (string)$type->attributes()['name']);
 						}
@@ -66,9 +114,9 @@ class Registry
 					else
 					{
 						foreach ($oper->xpath('enum') as $enum)
-							$this->feature_add_enum($root, $profiles[$profile], (string)$enum->attributes()['name']);
+							$feature_add_enum($profiles[$profile], (string)$enum->attributes()['name']);
 						foreach ($oper->xpath('command') as $proto)
-							$this->feature_add_proto($root, $profiles[$profile], (string)$proto->attributes()['name']);
+							$feature_add_proto($profiles[$profile], (string)$proto->attributes()['name']);
 						foreach ($oper->xpath('type') as $type)
 							$this->feature_add_type($root, $profiles[$profile], (string)$type->attributes()['name']);
 					}
@@ -112,6 +160,8 @@ class Registry
 	function __construct($url)
 	{
 		$root = new SimpleXMLElement(file_get_contents($url));
+		$this->parse_enums($root);
+		$this->parse_protos($root);
 		$this->parse_features($root);
 	}
 
