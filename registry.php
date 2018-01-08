@@ -48,6 +48,8 @@ class Registry
 			$_proto_full_type = str_replace($_proto_name, '', $_proto_full_type);
 			$_proto_base_type = $value_or($_proto->xpath('ptype'), 'void');
 			$_proto_arguments = [];
+			$_proto_types = [];
+			$_proto_names = [];
 
 			$group = '';
 			extract(Registry::attr_to_array($_proto->attributes()), EXTR_OVERWRITE);
@@ -62,6 +64,8 @@ class Registry
 				$_param_base_type = $value_or($_param->xpath('ptype'), 'void');
 				$_param_full_type = str_replace($_param_name, '', $_param_full_type);
 
+				$_proto_types [] = $_param_full_type;
+				$_proto_names [] = $_param_name;
 				$_proto_arguments[] = [
 					'name' 			 => trim($_param_name),
 					'full_type'  => trim($_param_full_type),
@@ -78,7 +82,9 @@ class Registry
 				'base_type'  => trim($_proto_base_type),
 				'is_const'	 => strstr($_proto_full_type, 'const') !== FALSE,
 				'is_pointer' => strstr($_proto_full_type, '*') !== FALSE,
-				'arguments'  => $_proto_arguments
+				'arguments'  => $_proto_arguments,
+				'arg_names'  => $_proto_names,
+				'arg_types'  => $_proto_types
 			];
 		}
 	}
