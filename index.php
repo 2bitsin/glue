@@ -13,7 +13,11 @@
 	$registry = new Registry($url_ogl);
 
 	$common_template = new Template("./templates/common");
-	$common_template->instantiate(compact('registry'), $build_dir);
+	foreach ($registry->types as $api => $types)
+	{
+		$common_template->instantiate(compact('types', 'api', 'registry'), $build_dir);
+	}
+
 	$feature_template = new Template("./templates/feature");
 	foreach ($registry->features as $feature)
 	{
