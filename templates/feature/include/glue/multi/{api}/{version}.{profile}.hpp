@@ -4,7 +4,7 @@
 
 namespace glue
 {
-	inline namespace <?= $version ?> 
+	inline namespace <?= $feature['name'] ?> 
 	{
 		struct Interface
 		{

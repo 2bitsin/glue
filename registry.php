@@ -1,6 +1,6 @@
 <?php
 
-@define ('BASE_NAME', '@base');
+@define ('BASE_NAME', 'base');
 
 class Registry
 {
@@ -25,7 +25,11 @@ class Registry
 			foreach ($_group->xpath('enum') as $enum)
 			{
 				extract(Registry::attr_to_array($enum->attributes()), EXTR_OVERWRITE);
-				$this->enums[$name] = ['value' => $value, 'namespace' => $namespace, 'type' => $type, 'group' => $group];
+				$this->enums[$name] = [
+					'value' 		=> $value,
+					'namespace' => $namespace,
+					'type'		  => $type,
+					'group' 		=> $group];
 			}
 		}
 	}
@@ -59,18 +63,43 @@ class Registry
 				$_param_full_type = str_replace($_param_name, '', $_param_full_type);
 
 				$_proto_arguments[] = [
-					'name' 			=> trim($_param_name),
-					'full_type' => trim($_param_full_type),
-					'base_type' => trim($_param_base_type),
-					'length' 		=> trim($length)
+					'name' 			 => trim($_param_name),
+					'full_type'  => trim($_param_full_type),
+					'base_type'  => trim($_param_base_type),
+					'length' 		 => trim($length),
+					'is_const'	 => strstr($_param_full_type, 'const') !== FALSE,
+					'is_pointer' => strstr($_param_full_type, '*') !== FALSE
 				];
 			}
 			$this->protos[$_proto_name] = [
-				'group' 		=> trim($group),
-				'name'  		=> trim($_proto_name),
-				'full_type' => trim($_proto_full_type),
-				'base_type' => trim($_proto_base_type),
-				'arguments' => $_proto_arguments
+				'group' 		 => trim($group),
+				'name'  		 => trim($_proto_name),
+				'full_type'  => trim($_proto_full_type),
+				'base_type'  => trim($_proto_base_type),
+				'is_const'	 => strstr($_proto_full_type, 'const') !== FALSE,
+				'is_pointer' => strstr($_proto_full_type, '*') !== FALSE,
+				'arguments'  => $_proto_arguments
+			];
+		}
+	}
+
+	protected function parse_types($root)
+	{
+		$value_or = function($v, $d) { return count($v) > 0 ? (string)$v[0] : $d; };
+		$this->types = [];
+		foreach($root->xpath('/registry/types/type') as $_type)
+		{
+			$requires = null;
+			$name = '';
+			$api = 'gl';
+			extract(Registry::attr_to_array($_type->attributes()), EXTR_OVERWRITE);
+			$_type_define = dom_import_simplexml($_type)->textContent;
+			$_type_name = $value_or($_type->xpath('name'), $name);
+			$this->types[$api][$_type_name] = [
+				'definition' 	=> $_type_define,
+				'api' 				=> $api,
+				'name' 				=> $_type_name,
+				'requires' 		=> $requires
 			];
 		}
 	}
@@ -161,9 +190,13 @@ class Registry
 	{
 		$root = new SimpleXMLElement(file_get_contents($url));
 		$this->parse_enums($root);
+		$this->parse_types($root);
 		$this->parse_protos($root);
 		$this->parse_features($root);
 	}
 
 	public $features;
+	public $types;
+	public $enums;
+	public $protos;
 };

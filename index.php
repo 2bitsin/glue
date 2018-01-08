@@ -8,12 +8,19 @@
 	$url_glx = "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/master/xml/glx.xml";
 	$url_wgl = "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/master/xml/wgl.xml";
 
+	$build_dir =  "./build";
+
 	$registry = new Registry($url_ogl);
-	//$feature_template = new Template("./templates/feature");
-	//foreach ($registry->features as $feature)
-	//	$feature_template->instantiate($feature, "./build");
-	foreach($registry->features as $feat)
+
+	$common_template = new Template("./templates/common");
+	$common_template->instantiate(compact('registry'), $build_dir);
+	$feature_template = new Template("./templates/feature");
+	foreach ($registry->features as $feature)
 	{
-		printf("%21s : %20s / protos(%5d) / enums(%5d) / types(%5d)\n", $feat['name'], $feat['profile'], count($feat['protos']), count($feat['enums']), count($feat['types']));
+		$api = $feature['api'];
+		$profile = $feature['profile'];
+		$version = $feature['version'];
+		$d = compact('registry', 'feature', 'api', 'profile', 'version');
+		$feature_template->instantiate($d, $build_dir);
 	}
 ?>

@@ -8,24 +8,24 @@ class Template
 		$this->entries = Template::reccursive_scandir($dir);
 	}
 
+	protected static function reccursive_scandir_ ($dir)
+	{
+		$dirlist = [];
+		foreach(scandir($dir) as $dirent)
+		{
+			if ($dirent == "." || $dirent == "..")
+				continue;
+			$dirent = "$dir/$dirent";
+			if (is_dir($dirent))
+				$dirlist = array_merge($dirlist, Template::reccursive_scandir_($dirent));
+			else
+				$dirlist[] = $dirent;
+		}
+		return $dirlist;
+	}
+
 	protected static function reccursive_scandir($dir)
 	{
-		function reccursive_scandir_ ($dir)
-		{
-			$dirlist = [];
-			foreach(scandir($dir) as $dirent)
-			{
-				if ($dirent == "." || $dirent == "..")
-					continue;
-				$dirent = "$dir/$dirent";
-				if (is_dir($dirent))
-					$dirlist = array_merge($dirlist, reccursive_scandir_($dirent));
-				else
-					$dirlist[] = $dirent;
-			}
-			return $dirlist;
-		}
-
 		$rebase_ = function ($curr) use ($dir)
 		{
 			$i = strstr($curr, $dir);
@@ -34,7 +34,7 @@ class Template
 			return null;
 		};
 
-		return array_map($rebase_, reccursive_scandir_($dir));
+		return array_map($rebase_, Template::reccursive_scandir_($dir));
 	}
 
 	protected function put_file($_destination, $_contents)
@@ -47,7 +47,7 @@ class Template
 
 	protected function instantiate_template($_destination, $_source, $_data)
 	{
-		extract($_data);
+		extract($_data, EXTR_OVERWRITE);
 		ob_start();
 		include ("{$this->basedir}/$_source");
 		$this->put_file($_destination, ob_get_clean());
