@@ -47,20 +47,21 @@ class Template
 
 	protected function instantiate_template($_destination, $_source, $_data)
 	{
-		extract($_data, EXTR_OVERWRITE);
+		foreach ($_data as $_one)
+			extract($_one, EXTR_OVERWRITE);
 		ob_start();
 		include ("{$this->basedir}/$_source");
 		$this->put_file($_destination, ob_get_clean());
 	}
 
-	public function instantiate($_data, $_build_dir = "./build")
+	public function instantiate($_build_dir = "./build", ...$_data)
 	{
 		foreach($this->entries as $_source)
 		{
 			$_callback = function ($_var) use ($_data)
 			{
-				if (isset($_data[$_var[1]]))
-					return $_data[$_var[1]];
+				if (isset($_data[0][$_var[1]]))
+					return $_data[0][$_var[1]];
 				return $_var[0];
 			};
 			$_destination = preg_replace_callback('/\{(.*?)\}/', $_callback, $_source);

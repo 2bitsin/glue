@@ -5,20 +5,22 @@
 
 	require_once 'template.php';
 	require_once 'registry.php';
+	require_once 'typedef.php';
 
 	$build_dir =  "./build";
 	system("rm -rf ${build_dir}");
 
 	$registry = new Registry($url_ogl);
 
+	$G_typedefs = generate_types_table();
 	$common_template = new Template("./templates/common");
-	$common_template->instantiate((array)$registry, $build_dir);
+	$common_template->instantiate($build_dir, (array)$registry, compact('G_typedefs'));
 
 	$feature_template = new Template("./templates/feature");
 	foreach ($registry->features as $feature)
 	{
 		extract($feature, EXTR_OVERWRITE);
 		$_args = compact('registry', 'feature', 'api', 'profile', 'version');
-		$feature_template->instantiate($_args, $build_dir);
+		$feature_template->instantiate ($build_dir, $_args, compact('G_typedefs'));
 	}
 ?>
