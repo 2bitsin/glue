@@ -45,6 +45,34 @@ class Template
 		file_put_contents($_destination, $_contents);
 	}
 
+	public static function camel_case_split($text)
+	{
+		$last = null;
+		$curr = '';
+		$result = [];
+		foreach (str_split($text) as $char)
+		{
+			if (ctype_upper($char)
+			 && ctype_lower($last))
+			{
+				$result[] = $curr;
+				$curr = '';
+			}
+			$curr .= $char;
+			$last = $char;
+		}
+		if (strlen($curr) > 0)
+			$result[] = $curr;
+		return $result;
+	}
+
+	public static function camel_skip_prefix($text)
+	{
+		$text = Template::camel_case_split($text);
+		array_shift($text);
+		return implode('', $text);
+	}
+
 	protected function instantiate_template($_destination, $_source, $_data)
 	{
 		foreach ($_data as $_one)
@@ -56,12 +84,13 @@ class Template
 
 	public function instantiate($_build_dir = "./build", ...$_data)
 	{
+		$_all_args = array_merge(...$_data);
 		foreach($this->entries as $_source)
 		{
-			$_callback = function ($_var) use ($_data)
+			$_callback = function ($_var) use ($_all_args)
 			{
-				if (isset($_data[0][$_var[1]]))
-					return $_data[0][$_var[1]];
+				if (isset($_all_args[$_var[1]]))
+					return $_all_args[$_var[1]];
 				return $_var[0];
 			};
 			$_destination = preg_replace_callback('/\{(.*?)\}/', $_callback, $_source);

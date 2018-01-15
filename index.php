@@ -17,10 +17,6 @@
 	$common_template->instantiate($build_dir, (array)$registry, compact('G_typedefs'));
 
 	$feature_template = new Template("./templates/feature");
-	foreach ($registry->features as $feature)
-	{
-		extract($feature, EXTR_OVERWRITE);
-		$_args = compact('registry', 'feature', 'api', 'profile', 'version');
-		$feature_template->instantiate ($build_dir, $_args, compact('G_typedefs'));
-	}
+	foreach ($registry->features as $_feature)
+		$feature_template->instantiate ($build_dir, (array)$registry, compact('G_typedefs'), $_feature);
 ?>

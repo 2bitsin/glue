@@ -1,8 +1,8 @@
-#include <glue/multi/<?= $feature['api'] ?>/<?= $feature['version'] ?>.<?= $feature['profile'] ?>.hpp>
+#include <glue/multi/<?= $api ?>/<?= $version ?>.<?= $profile ?>.hpp>
 
 namespace glue
 {
-	inline namespace <?= $feature['name'] ?> 
+	inline namespace <?= strtolower($name) ?>_<?= $profile ?> 
  	{
 
  	}

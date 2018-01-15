@@ -51,22 +51,22 @@ class Registry
 			$_proto_types = [];
 			$_proto_names = [];
 
-			$group = '';
-			extract(Registry::attr_to_array($_proto->attributes()), EXTR_OVERWRITE);
+		
 
 			foreach ($_command->xpath('param') as $_param)
 			{
-				$length = '';
+				$group = null;
+				$length = null;
 				extract(Registry::attr_to_array($_param->attributes()), EXTR_OVERWRITE);
-
 				$_param_full_type = (string)dom_import_simplexml($_param)->textContent;
 				$_param_name = (string)$_param->xpath('name')[0];
 				$_param_base_type = $value_or($_param->xpath('ptype'), 'void');
 				$_param_full_type = str_replace($_param_name, '', $_param_full_type);
 
-				$_proto_types [] = $_param_full_type;
-				$_proto_names [] = $_param_name;
+				$_proto_types [] = trim($_param_full_type);
+				$_proto_names [] = trim($_param_name);
 				$_proto_arguments[] = [
+					'group' 		 => trim($group),
 					'name' 			 => trim($_param_name),
 					'full_type'  => trim($_param_full_type),
 					'base_type'  => trim($_param_base_type),
@@ -75,6 +75,10 @@ class Registry
 					'is_pointer' => strstr($_param_full_type, '*') !== FALSE
 				];
 			}
+			
+			$group = null;
+			$length = null;
+			extract(Registry::attr_to_array($_proto->attributes()), EXTR_OVERWRITE);
 			$this->protos[$_proto_name] = [
 				'group' 		 => trim($group),
 				'name'  		 => trim($_proto_name),
