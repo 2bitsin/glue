@@ -39,5 +39,11 @@ namespace glue
   using debug_proc_t = void (GLUE_APIENTRY *)(enum_t, enum_t, std::uint32_t, enum_t, std::int32_t,const char *, const void *);
 	using amd_debug_proc_t = void (GLUE_APIENTRY *)(std::uint32_t, enum_t, enum_t, std::int32_t, const char *, void *);
 	using nv_vulkan_proc_t = void (GLUE_APIENTRY *)(void);
+
+	namespace detail
+	{
+		template<typename F>
+		using fptr_t = *F;
+	}
 }
 #endif
