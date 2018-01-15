@@ -66,13 +66,6 @@ class Template
 		return $result;
 	}
 
-	public static function camel_skip_prefix($text)
-	{
-		$text = Template::camel_case_split($text);
-		array_shift($text);
-		return implode('', $text);
-	}
-
 	protected function instantiate_template($_destination, $_source, $_data)
 	{
 		foreach ($_data as $_one)
