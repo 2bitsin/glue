@@ -21,6 +21,14 @@
 			return implode($_output, ', ');
 		}
 
+		public static function build_argument_types($_typedefs, $_proto)
+		{
+			$_output = [];
+			foreach($_proto['arg_types'] as $_arg)
+				$_output[] = CppHelper::rewrite_type($_typedefs, $_arg);
+			return implode($_output, ', ');
+		}
+
 		public static function rewrite_type($_typedefs, $_full_type)
 		{
 			$_replace = function ($value) use ($_typedefs)
@@ -30,7 +38,7 @@
 					return $value[0];
 				return $_typedefs[$value[0]]['alias'];
 			};
-			return preg_replace_callback('/\w+/', $_replace, $_full_type);
+			return preg_replace_callback('/GL\w+/', $_replace, $_full_type);
 		}
 
 	};

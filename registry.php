@@ -51,8 +51,6 @@ class Registry
 			$_proto_types = [];
 			$_proto_names = [];
 
-		
-
 			foreach ($_command->xpath('param') as $_param)
 			{
 				$group = null;
@@ -61,8 +59,11 @@ class Registry
 				$_param_full_type = (string)dom_import_simplexml($_param)->textContent;
 				$_param_name = (string)$_param->xpath('name')[0];
 				$_param_base_type = $value_or($_param->xpath('ptype'), 'void');
-				$_param_full_type = str_replace($_param_name, '', $_param_full_type);
-
+				if (strstr($_param_full_type, '*') !== FALSE)
+					$i = 1;
+				$_param_full_type =  preg_split('/(\w+|\*)/', $_param_full_type, -1, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+				array_pop($_param_full_type);
+				$_param_full_type = implode('', $_param_full_type);
 				$_proto_types [] = trim($_param_full_type);
 				$_proto_names [] = trim($_param_name);
 				$_proto_arguments[] = [
@@ -75,7 +76,7 @@ class Registry
 					'is_pointer' => strstr($_param_full_type, '*') !== FALSE
 				];
 			}
-			
+
 			$group = null;
 			$length = null;
 			extract(Registry::attr_to_array($_proto->attributes()), EXTR_OVERWRITE);
