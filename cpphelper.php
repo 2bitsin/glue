@@ -33,7 +33,7 @@
 		{
 			$_replace = function ($value) use ($_typedefs)
 			{
-				if (!isset ($_typedefs[$value[0]]) 
+				if (!isset ($_typedefs[$value[0]])
 					||!isset ($_typedefs[$value[0]]['alias']))
 					return $value[0];
 				return $_typedefs[$value[0]]['alias'];

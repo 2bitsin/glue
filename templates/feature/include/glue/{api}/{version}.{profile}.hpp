@@ -12,7 +12,7 @@ namespace glue
 		{
 <?php
 	foreach($protos as $_proto):
-		printf("\t\t\t\tfunction<%s(%s)> %s = nullptr;\n",
+		printf("\t\t\tconst function<%s(%s)> %s = nullptr;\n",
 			CppHelper::rewrite_type($G_typedefs, $_proto['full_type']),
 			CppHelper::build_argument_types($G_typedefs, $_proto),
 			CppHelper::camel_skip_prefix($_proto['name'])
