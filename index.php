@@ -14,11 +14,11 @@
 
 	$G_typedefs = generate_types_table();
 	$common_template = new Template("./templates/common");
-	$common_template->instantiate($build_dir, (array)$registry, compact('G_typedefs'));
+	$common_template->instantiate($build_dir, (array)$registry, compact('G_typedefs', 'registry'));
 
 	$feature_template = new Template("./templates/feature");
 	foreach ($registry->features as $_feature)
-		$feature_template->instantiate ($build_dir, (array)$registry, compact('G_typedefs'), $_feature);
+		$feature_template->instantiate ($build_dir, (array)$registry, compact('G_typedefs', 'registry'), $_feature);
 
 	mkdir($build_dir . '/cmake');
 	chdir($build_dir . '/cmake');

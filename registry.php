@@ -31,6 +31,7 @@ class Registry
 					'namespace' => $namespace,
 					'type'		  => $type,
 					'group' 		=> $group];
+				$this->add_string($name);
 			}
 		}
 	}
@@ -51,6 +52,7 @@ class Registry
 			$_proto_arguments = [];
 			$_proto_types = [];
 			$_proto_names = [];
+			$this->add_string($_proto_name);
 
 			foreach ($_command->xpath('param') as $_param)
 			{
@@ -59,6 +61,7 @@ class Registry
 				extract(Registry::attr_to_array($_param->attributes()), EXTR_OVERWRITE);
 				$_param_full_type = (string)dom_import_simplexml($_param)->textContent;
 				$_param_name = (string)$_param->xpath('name')[0];
+				//$this->add_string($_param_name);
 				$_param_base_type = $value_or($_param->xpath('ptype'), 'void');
 				if (strstr($_param_full_type, '*') !== FALSE)
 					$i = 1;
@@ -198,6 +201,24 @@ class Registry
 		}
 	}
 
+	protected function add_string($string)
+	{
+		$this->strindx [$string] = count($this->strsort);
+		$this->strsort [] = $string;
+	}
+
+	public function lookup_string($string)
+	{
+		if (!isset($this->strindx[$string]))
+			$this->add_string($string);
+		return $this->strindx[$string];
+	}
+
+	public function all_strings()
+	{
+		return $this->strsort;
+	}
+
 	function __construct($url)
 	{
 		$root = new SimpleXMLElement(file_get_contents($url));
@@ -211,4 +232,6 @@ class Registry
 	public $types;
 	public $enums;
 	public $protos;
+	public $strindx;
+	public $strsort;
 };

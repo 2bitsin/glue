@@ -1,4 +1,5 @@
 #include <glue/<?= $api ?>/<?= $version ?>.<?= $profile ?>.hpp>
+#include "../common/strings.hpp"
 
 namespace glue
 {
@@ -15,9 +16,9 @@ namespace glue
 <?php 
 	foreach($protos as $_proto)
 	{
-		$fmt = "\t\t\t\tassign(target.%s, lfn(\"%s\"));\n";
+		$fmt = "\t\t\t\tassign(target.%s, lfn(impl::str_by_index(%u)));\n";
 		$name = CppHelper::camel_skip_prefix($_proto['name']);
-		printf ($fmt, $name, $_proto['name']);
+		printf ($fmt, $name, $registry->lookup_string($_proto['name']));
 	}
 ?>
 		}
