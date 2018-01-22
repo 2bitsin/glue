@@ -19,4 +19,8 @@
 	$feature_template = new Template("./templates/feature");
 	foreach ($registry->features as $_feature)
 		$feature_template->instantiate ($build_dir, (array)$registry, compact('G_typedefs'), $_feature);
+
+	mkdir($build_dir . '/cmake');
+	chdir($build_dir . '/cmake');
+	system('cmake ../ && make && make install');
 ?>

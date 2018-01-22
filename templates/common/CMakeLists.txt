@@ -7,12 +7,12 @@ else ()
     set (PROJECTNAME_ARCHITECTURE "x86")
 endif ()
 
-include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/build/include")
+include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-file(GLOB_RECURSE GLUE_SOURCE "." "${CMAKE_CURRENT_SOURCE_DIR}/build/source/*.cpp")
-file(GLOB_RECURSE GLUE_HEADER "." "${CMAKE_CURRENT_SOURCE_DIR}/build/include/*.hpp")
+file(GLOB_RECURSE GLUE_SOURCE "." "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
+file(GLOB_RECURSE GLUE_HEADER "." "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
 add_library(glue ${GLUE_SOURCE} ${GLUE_HEADER})
 
 install(TARGETS glue EXPORT glue

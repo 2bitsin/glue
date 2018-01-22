@@ -38,8 +38,8 @@ namespace glue
 			Interface& operator = (const Interface&) = default;
 			Interface() = default;
 		public:
-			friend void load(Interface&, std::function<void*(const char*)>);
 		};
+		void load(Interface&, std::function<void*(const char*)>);
 	}
 }
 
