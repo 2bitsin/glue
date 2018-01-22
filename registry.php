@@ -24,6 +24,7 @@ class Registry
 			extract(Registry::attr_to_array($_group->attributes()), EXTR_OVERWRITE);
 			foreach ($_group->xpath('enum') as $enum)
 			{
+				$type = null;
 				extract(Registry::attr_to_array($enum->attributes()), EXTR_OVERWRITE);
 				$this->enums[$name] = [
 					'value' 		=> $value,

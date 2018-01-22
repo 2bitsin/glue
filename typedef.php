@@ -16,6 +16,7 @@
 		add_type_definition($G_types_table, 'GLbyte', 							'std::int8_t', 							['<cstdint>']);
 		add_type_definition($G_types_table, 'GLshort', 							'std::int16_t', 						['<cstdint>']);
 		add_type_definition($G_types_table, 'GLint', 								'std::int32_t', 						['<cstdint>']);
+		add_type_definition($G_types_table, 'GLclampx', 						'std::int32_t', 						['<cstdint>']);
 		add_type_definition($G_types_table, 'GLubyte', 							'std::uint8_t', 						['<cstdint>']);
 		add_type_definition($G_types_table, 'GLushort', 						'std::uint16_t', 						['<cstdint>']);
 		add_type_definition($G_types_table, 'GLuint',	 							'std::uint32_t', 						['<cstdint>']);
