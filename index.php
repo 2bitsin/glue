@@ -14,13 +14,18 @@
 
 	$G_typedefs = generate_types_table();
 	$common_template = new Template("./templates/common");
-	$common_template->instantiate($build_dir, (array)$registry, compact('G_typedefs', 'registry'));
-
 	$feature_template = new Template("./templates/feature");
+	$tests_template = new Template("./templates/tests");
+
+	$common_template->instantiate($build_dir, (array)$registry, compact('G_typedefs', 'registry'));
+	$tests_template->instantiate($build_dir, (array)$registry, compact('G_typedefs', 'registry'));
+	
 	foreach ($registry->features as $_feature)
 		$feature_template->instantiate ($build_dir, (array)$registry, compact('G_typedefs', 'registry'), $_feature);
 
 	mkdir($build_dir . '/cmake');
 	chdir($build_dir . '/cmake');
 	system('cmake ../ && make && make install');
+	chdir('../install/bin/x64/');
+	system('./glue_tests');
 ?>
