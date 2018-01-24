@@ -221,6 +221,9 @@ class Registry
 
 	function __construct($url)
 	{
+		$this->strsort = [];
+		$this->strindx = [];
+
 		$root = new SimpleXMLElement(file_get_contents($url));
 		$this->parse_enums($root);
 		$this->parse_types($root);

@@ -25,7 +25,15 @@
 
 	mkdir($build_dir . '/cmake');
 	chdir($build_dir . '/cmake');
-	system('cmake ../ && make && make install');
-	chdir('../install/bin/x64/');
-	system('./glue_tests');
+
+	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+		system('cmake ../ -G "Visual Studio 15 2017 Win64" && MSBuild ALL_BUILD.vcxproj && MSBuild INSTALL.vcxproj');
+		chdir('../install/bin/x64/');
+		system('glue_tests.exe');
+	} else {
+    	system('cmake ../ && make && make install');
+		chdir('../install/bin/x64/');
+		system('./glue_tests');
+	}
+
 ?>
