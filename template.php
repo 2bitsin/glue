@@ -5,7 +5,17 @@ class Template
 	function __construct($dir)
 	{
 		$this->basedir = $dir;
-		$this->entries = Template::reccursive_scandir($dir);
+		$this->entries = [];
+		foreach (Template::reccursive_scandir($dir) as $file)
+		{
+			if (stripos($file, '.fragments') === 0)
+			{
+				$name = explode('/', $file)[1];
+				$this->fragments[$name] = $file;
+				continue;
+			}
+			$this->entries[] = $file;
+		}
 	}
 
 	protected static function reccursive_scandir_ ($dir)
@@ -66,13 +76,18 @@ class Template
 		return $result;
 	}
 
-	protected function instantiate_template($_destination, $_source, $_data)
+	protected function instantiate_template($_source, $_data)
 	{
 		foreach ($_data as $_one)
 			extract($_one, EXTR_OVERWRITE);
 		ob_start();
 		include ("{$this->basedir}/$_source");
-		$this->put_file($_destination, ob_get_clean());
+		return ob_get_clean();
+	}
+
+	public function instantiate_fragment($name, ...$_data)
+	{
+		echo $this->instantiate_template($this->fragments[$name], $_data);
 	}
 
 	public function instantiate($_build_dir = "./build", ...$_data)
@@ -87,10 +102,11 @@ class Template
 				return $_var[0];
 			};
 			$_destination = preg_replace_callback('/\{(.*?)\}/', $_callback, $_source);
-			$this->instantiate_template("$_build_dir/$_destination", $_source, $_data);
+			$this->put_file("$_build_dir/$_destination", $this->instantiate_template($_source, $_data));
 		}
 	}
 
 	private $basedir = './';
 	private $entries = [];
+	private $fragments = [];
 };

@@ -1,0 +1,1 @@
+			function<<?= CppHelper::rewrite_type($G_typedefs, $_proto['full_type']) ?>(<?= CppHelper::build_argument_types($G_typedefs, $_proto) ?>)> <?= CppHelper::camel_skip_prefix($_proto['name']) ?> = nullptr;

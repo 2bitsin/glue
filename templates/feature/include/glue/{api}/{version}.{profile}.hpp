@@ -17,7 +17,7 @@ namespace glue
 		public:
 <?php
 	foreach($enums as $name => $_enum):
-		printf("\t\t\tstatic constexpr auto %s = %s;\n", $name, $_enum['value'] . $_enum['type']);
+		$this->instantiate_fragment('member_constant', compact('name', '_enum'));
 	endforeach;
 ?>
 			/*	=============
@@ -26,11 +26,7 @@ namespace glue
 		public:
 <?php
 	foreach($protos as $_proto):
-		printf("\t\t\tfunction<%s(%s)> %s = nullptr;\n",
-			CppHelper::rewrite_type($G_typedefs, $_proto['full_type']),
-			CppHelper::build_argument_types($G_typedefs, $_proto),
-			CppHelper::camel_skip_prefix($_proto['name'])
-		);
+		$this->instantiate_fragment('member_function_pointer', compact('G_typedefs', '_proto'));
 	endforeach;
 ?>
 		public:
