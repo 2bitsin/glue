@@ -1,6 +1,6 @@
 <?php require_once 'cpphelper.php' ?>
-#ifndef <?= $name ?>_<?= strtoupper($profile) ?>_HPP
-#define <?= $name ?>_<?= strtoupper($profile) ?>_HPP
+#ifndef LVL1_<?= $name ?>_<?= strtoupper($profile) ?>_HPP
+#define LVL1_<?= $name ?>_<?= strtoupper($profile) ?>_HPP
 #include "../../function.hpp"
 #include "../../types.hpp"
 #include <functional>
