@@ -32,6 +32,8 @@ namespace glue
 		#endif
 	;
 	using enum_t = std::uint32_t;
+	using boolean_t = std::uint8_t;
+	using bitfield_t = std::uint32_t;
 	using float16_t = std::uint16_t;
 	using float32_t = float;
 	using float64_t = double;

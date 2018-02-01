@@ -10,9 +10,9 @@
 		$G_types_table = [];
 		add_type_definition($G_types_table, 'GLeglClientBufferEXT', null,												['{types.hpp}']);
 		add_type_definition($G_types_table, 'GLeglImageEOS', 				null,												['{types.hpp}']);
-		add_type_definition($G_types_table, 'GLenum', 							'std::uint32_t', 						['<cstdint>']);
-		add_type_definition($G_types_table, 'GLboolean', 						'std::uint8_t', 						['<cstdint>']);
-		add_type_definition($G_types_table, 'GLbitfield', 					'std::uint32_t', 						['<cstdint>']);
+		add_type_definition($G_types_table, 'GLenum', 							'enum_t', 									['{types.hpp}']);
+		add_type_definition($G_types_table, 'GLboolean', 						'boolean_t', 								['{types.hpp}']);
+		add_type_definition($G_types_table, 'GLbitfield', 					'bitfield_t', 						  ['{types.hpp}']);
 		add_type_definition($G_types_table, 'GLbyte', 							'std::int8_t', 							['<cstdint>']);
 		add_type_definition($G_types_table, 'GLshort', 							'std::int16_t', 						['<cstdint>']);
 		add_type_definition($G_types_table, 'GLint', 								'std::int32_t', 						['<cstdint>']);
