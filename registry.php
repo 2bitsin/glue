@@ -219,12 +219,26 @@ class Registry
 		return $this->strsort;
 	}
 
+	function download($url)
+	{
+		$key = base64_encode($url);
+		$cache_dir = implode('/', ['.', 'cache']);
+		if (!file_exists($cache_dir))
+			mkdir($cache_dir);
+		$path = implode('/', [$cache_dir, $key]);
+		if (!file_exists($path))
+		{
+			$data = file_get_contents($url);
+			file_put_contents($path, $data);
+		}
+		return file_get_contents($path);
+	}
+
 	function __construct($url)
 	{
 		$this->strsort = [];
 		$this->strindx = [];
-
-		$root = new SimpleXMLElement(file_get_contents($url));
+		$root = new SimpleXMLElement($this->download($url));
 		$this->parse_enums($root);
 		$this->parse_types($root);
 		$this->parse_protos($root);

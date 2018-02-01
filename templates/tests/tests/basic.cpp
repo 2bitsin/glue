@@ -8,9 +8,5 @@ int main()
 
 	glue::load(ifc, [](auto c) {return (void*)nullptr;});
 
-	const auto* p = glue::enum_to_string(0x2);
-	while (*p) std::cout << *(p++) <<"\n";
-
-	std::cout << "Hello world!";
 	return 0;
 }
