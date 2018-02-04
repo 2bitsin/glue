@@ -10,7 +10,7 @@ namespace glue
 		void assign(T& target, P&& fptr, L name)
 		{
 			target = (T)fptr(name);
-			assert(target != nullptr);
+			//assert(target != nullptr);
 		}
 	}
 	inline namespace <?= CppHelper::the_namespace($feature) ?> 

@@ -14,6 +14,9 @@ namespace glue::lvl2
 			api(const api&) = default;
 			api& operator = (const api&) = default;
 			api() = default;
+<?php
+	$this->instantiate_fragment('uniform_api', compact('protos', 'G_typedefs', 'registry'));
+?>
 		public:
 		};
 	}
