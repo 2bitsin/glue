@@ -3,22 +3,17 @@
 #define LVL2_<?= $name ?>_<?= strtoupper($profile) ?>_HPP
 
 #include "../../lvl1/<?= $api ?>/<?= $version ?>.<?= $profile ?>.hpp"
+#include "../../math.hpp"
 
 namespace glue::lvl2
 {
-	inline namespace <?= strtolower($name) ?>_<?= $profile ?> 
+	inline namespace <?= CppHelper::the_namespace($feature) ?> 
 	{
-		struct Interface: glue::<?= strtolower($name) ?>_<?= $profile ?>::Interface
+		struct api: glue::<?= CppHelper::the_namespace($feature) ?>::api
 		{
-<?php
-	foreach($protos as $_key => $_proto)
-	{
-		//if (preg_match($_key)
-	}
-?>
-			Interface(const Interface&) = default;
-			Interface& operator = (const Interface&) = default;
-			Interface() = default;
+			api(const api&) = default;
+			api& operator = (const api&) = default;
+			api() = default;
 		public:
 		};
 	}

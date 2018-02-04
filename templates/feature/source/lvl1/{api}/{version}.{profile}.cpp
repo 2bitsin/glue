@@ -9,9 +9,9 @@ namespace glue
 		void assign(T& target, P fptr)
 		{ target = (T)fptr; }
 	}
-	inline namespace <?= strtolower($name) ?>_<?= $profile ?> 
+	inline namespace <?= CppHelper::the_namespace($feature) ?> 
  	{
-		void load(Interface& target, std::function<void*(const char*)> lfn)
+		void load(api& target, std::function<void*(const char*)> lfn)
 		{
 <?php 
 	foreach($protos as $_proto):

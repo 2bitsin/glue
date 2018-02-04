@@ -19,8 +19,8 @@
 
 	$common_template->instantiate($build_dir, (array)$registry, compact('G_typedefs', 'registry'));
 	$tests_template->instantiate($build_dir, (array)$registry, compact('G_typedefs', 'registry'));
-	foreach ($registry->features as $_feature)
-		$feature_template->instantiate ($build_dir, (array)$registry, compact('G_typedefs', 'registry'), $_feature);
+	foreach ($registry->features as $feature)
+		$feature_template->instantiate ($build_dir, (array)$registry, compact('G_typedefs', 'registry', 'feature'), $feature);
 
 	mkdir($build_dir . '/cmake');
 	chdir($build_dir . '/cmake');
@@ -30,7 +30,7 @@
 		chdir('../install/bin/x64/');
 		system('glue_tests.exe');
 	} else {
-    	system('cmake ../ && make && make install');
+    system('cmake ../ && make && make install');
 		chdir('../install/bin/x64/');
 		system('./glue_tests');
 	}

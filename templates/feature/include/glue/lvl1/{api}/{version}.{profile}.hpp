@@ -7,9 +7,9 @@
 
 namespace glue
 {
-	inline namespace <?= strtolower($name) ?>_<?= $profile ?> 
+	inline namespace <?= CppHelper::the_namespace($feature) ?> 
 	{
-		struct Interface
+		struct api
 		{
 			/* 	=============
 					constants
@@ -30,12 +30,12 @@ namespace glue
 	endforeach;
 ?>
 		public:
-			Interface(const Interface&) = default;
-			Interface& operator = (const Interface&) = default;
-			Interface() = default;
+			api(const api&) = default;
+			api& operator = (const api&) = default;
+			api() = default;
 		public:
 		};
-		void load(Interface&, std::function<void*(const char*)>);
+		void load(api&, std::function<void*(const char*)>);
 	}
 }
 

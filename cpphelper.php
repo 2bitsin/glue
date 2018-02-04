@@ -41,4 +41,10 @@
 			return preg_replace_callback('/GL\w+/', $_replace, $_full_type);
 		}
 
+		public static function the_namespace($args)
+		{
+			extract($args, EXTR_OVERWRITE);
+			return $profile . '_' . str_replace('.', '_', $version);
+		}
+
 	};
