@@ -1,13 +1,17 @@
 #include <glue/lvl1/<?= $api ?>/<?= $version ?>.<?= $profile ?>.hpp>
 #include "../../common/strings.hpp"
+#include <cassert>
 
 namespace glue
 {
 	namespace 
 	{
-		template <typename T, typename P>
-		void assign(T& target, P fptr)
-		{ target = (T)fptr; }
+		template <typename T, typename P, typename L>
+		void assign(T& target, P&& fptr, L name)
+		{
+			target = (T)fptr(name);
+			assert(target != nullptr);
+		}
 	}
 	inline namespace <?= CppHelper::the_namespace($feature) ?> 
  	{
