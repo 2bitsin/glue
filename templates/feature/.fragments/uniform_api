@@ -1,7 +1,0 @@
-<?php
-	if (isset($protos['glUniform1f']))
-	{
-		printf ("\t\t\t/* Has uniforms */\n");
-	}
-
-?>

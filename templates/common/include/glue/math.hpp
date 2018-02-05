@@ -79,6 +79,15 @@ namespace glue
 	GLUE_DEFINE_STRUCTS(u,unsigned);
 	GLUE_DEFINE_STRUCTS(b,bool);
 
+	template <typename T, std::size_t M>
+	const T* value_ptr(const vector_impl<T, M>& vec) { return &vec[0]; }
+	template <typename T, std::size_t M, std::size_t N>
+	const T* value_ptr(const matrix_impl<T, M, N>& mat) { return &mat[0][0]; }
+	template <typename T, std::size_t M>
+	T* value_ptr(vector_impl<T, M>& vec) { return &vec[0]; }
+	template <typename T, std::size_t M, std::size_t N>
+	T* value_ptr(matrix_impl<T, M, N>& mat) { return &mat[0][0]; }
+
 #endif
 
 }
