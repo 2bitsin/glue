@@ -1,0 +1,1 @@
+			void api::uniform(uniform_location_t, <?= $type ?> value) const {}
