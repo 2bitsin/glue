@@ -7,9 +7,9 @@
 
 int main()
 {
-	glue::core_4_6::api ifc;
+	glue::lvl2::core_4_6::api ifc;
 
-	glue::load(ifc, [](auto c) {return (void*)nullptr;});
+	glue::lvl1::load(ifc, [](auto c) {return (void*)nullptr;});
 
 	return 0;
 }

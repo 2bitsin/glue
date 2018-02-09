@@ -2,7 +2,7 @@
 #include "../../common/strings.hpp"
 #include <cassert>
 
-namespace glue
+namespace glue::lvl1
 {
 	namespace 
 	{

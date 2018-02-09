@@ -9,7 +9,7 @@ namespace glue::lvl2
 {
 	inline namespace <?= CppHelper::the_namespace($feature) ?> 
 	{
-		struct api: glue::<?= CppHelper::the_namespace($feature) ?>::api
+		struct api: glue::lvl1::<?= CppHelper::the_namespace($feature) ?>::api
 		{
 			api(const api&) = default;
 			api& operator = (const api&) = default;

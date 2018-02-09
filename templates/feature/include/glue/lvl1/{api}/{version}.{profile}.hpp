@@ -5,7 +5,7 @@
 #include "../../types.hpp"
 #include <functional>
 
-namespace glue
+namespace glue::lvl1
 {
 	inline namespace <?= CppHelper::the_namespace($feature) ?> 
 	{
