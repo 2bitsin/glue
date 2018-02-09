@@ -11,6 +11,9 @@ class Template
 			if (stripos($file, '.fragments') === 0)
 			{
 				$name = explode('/', $file)[1];
+				$name = explode('.', $name);
+				array_pop($name);
+				$name = implode('.', $name);
 				$this->fragments[$name] = $file;
 				continue;
 			}

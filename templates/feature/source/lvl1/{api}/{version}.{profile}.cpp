@@ -18,9 +18,10 @@ namespace glue
 		void load(api& target, std::function<void*(const char*)> lfn)
 		{
 <?php 
-	foreach($protos as $_proto):
+	foreach($protos as $_proto)
+	{
 		$this->instantiate_fragment('assign_statement', compact('registry', 'G_typedefs', '_proto'));
-	endforeach;
+	}
 ?>
 		}
  	}
