@@ -47,3 +47,15 @@
 			continue;
 		$this->instantiate_fragment('uniform_api_dsa_vector_' . $what, $_args);
 	}
+
+	if ($what == 'decl')
+	{
+?> 
+			template<typename _Ctype, decltype(std::data(std::declval<_Ctype>())) = nullptr,
+																decltype(std::size(std::declval<_Ctype>())) = 0u>
+			auto uniform(uniform_location_t loc, const _Ctype& values) const
+			{
+				return uniform(loc, (std::int32_t)std::size(values), std::data(values));
+			}
+<?php
+	}
