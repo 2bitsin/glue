@@ -6,6 +6,7 @@
 #if !defined(GLUE_DONT_USE_GLM) && __has_include(<glm/glm.hpp>)
 	#define GLUE_USES_GLM 1
 	#include <glm/glm.hpp>
+	#include <glm/gtc/type_ptr.hpp>
 #else
 	#define GLUE_USES_GLM 0
 #endif
