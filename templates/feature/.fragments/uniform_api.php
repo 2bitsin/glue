@@ -52,14 +52,14 @@
 	{
 ?> 
 			template<typename _Ctype, typename = std::enable_if_t<utility::has_data_and_size_v<_Ctype>>>
-			auto uniform(uniform_location_t loc, const _Ctype& values) const
+			auto Uniform(uniform_location_t loc, const _Ctype& values) const
 			{
-				return uniform(loc, (std::int32_t)utility::size(values), utility::data(values));
+				return Uniform(loc, (std::int32_t)utility::size(values), utility::data(values));
 			}
 			template<typename _Ctype, typename = std::enable_if_t<utility::has_data_and_size_v<_Ctype>>>
-			auto program_uniform(program_name_t id, uniform_location_t loc, const _Ctype& values) const
+			auto ProgramUniform(program_name_t id, uniform_location_t loc, const _Ctype& values) const
 			{
-				return program_uniform(id, loc, (std::int32_t)utility::size(values), utility::data(values));
+				return ProgramUniform(id, loc, (std::int32_t)utility::size(values), utility::data(values));
 			}
 <?php
 	}
