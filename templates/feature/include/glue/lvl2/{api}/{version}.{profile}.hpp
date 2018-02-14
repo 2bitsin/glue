@@ -4,6 +4,7 @@
 
 #include "../../lvl1/<?= $api ?>/<?= $version ?>.<?= $profile ?>.hpp"
 #include "../../math.hpp"
+#include "../../utility.hpp"
 
 namespace glue::lvl2
 {

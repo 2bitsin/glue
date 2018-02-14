@@ -27,9 +27,6 @@ int main(int, char**)
 	glue::api gl;
 	glue::load(gl, SDL_GL_GetProcAddress);
 
-	std::vector<glue::vec4> v;
-	gl.uniform(1, v);
-
 	SDL_Event event_;
 	while (!SDL_QuitRequested())
 	{
