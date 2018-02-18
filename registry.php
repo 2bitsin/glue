@@ -57,7 +57,7 @@ class Registry
 			foreach ($_command->xpath('param') as $_param)
 			{
 				$group = null;
-				$length = null;
+				$len = null;
 				extract(Registry::attr_to_array($_param->attributes()), EXTR_OVERWRITE);
 				$_param_full_type = (string)dom_import_simplexml($_param)->textContent;
 				$_param_name = (string)$_param->xpath('name')[0];
@@ -75,7 +75,7 @@ class Registry
 					'name' 			 => trim($_param_name),
 					'full_type'  => trim($_param_full_type),
 					'base_type'  => trim($_param_base_type),
-					'length' 		 => trim($length),
+					'length' 		 => trim($len),
 					'is_const'	 => strstr($_param_full_type, 'const') !== FALSE,
 					'is_pointer' => strstr($_param_full_type, '*') !== FALSE
 				];

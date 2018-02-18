@@ -22,6 +22,7 @@
 	foreach ($registry->features as $feature)
 		$feature_template->instantiate ($build_dir, (array)$registry, compact('G_typedefs', 'registry', 'feature'), $feature);
 
+	/*	
 	mkdir($build_dir . '/cmake');
 	chdir($build_dir . '/cmake');
 
@@ -34,5 +35,5 @@
 		chdir('../install/bin/x64/');
 		system('./glue_tests');
 	}
-
+	*/
 ?>
