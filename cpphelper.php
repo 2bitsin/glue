@@ -47,41 +47,4 @@
 			return $profile . '_' . str_replace('.', '_', $version);
 		}
 
-		protected static function find_pointer_arg($arguments)
-		{
-			$i = 0;
-			foreach($arguments as $arg)
-			{
-				if ($arg['is_pointer'])
-					return $i;
-				++$i;
-			}
-			return -1;
-		}
-
-		const OP_VECTOR_OR_SCALAR_ARRAY = 0;
-		const OP_MATRIX_ARRAY = 1;
-
-		protected static function modernize_vector_call($proto)
-		{
-		}
-
-		public static function modernize($proto)
-		{
-			$name = $proto['name'];
-			$parts = Template::camel_case_split($name);
-			array_shift($parts);
-			$last =	array_slice($parts, -1)[0];
-
-			$arguments = $proto['arguments'];
-			$ptr_index = CppHelper::find_pointer_arg($arguments);
-
-			if ($ptr_index >= 0)
-			{
-				if (preg_match('/^Matrix((\d)(x(\d))?)(u?i|f|d|u?b|u?s)v$/i', $last, $m))
-					return CppHelper::modernize_vector_call($proto, $ptr_index, $m);
-
-			}
-		}
-
 	};

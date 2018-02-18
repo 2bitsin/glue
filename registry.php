@@ -50,6 +50,7 @@ class Registry
 			$_proto_full_type = str_replace($_proto_name, '', $_proto_full_type);
 			$_proto_base_type = $value_or($_proto->xpath('ptype'), 'void');
 			$_proto_arguments = [];
+			$_proto_argsindex = [];
 			$_proto_types = [];
 			$_proto_names = [];
 			$this->add_string($_proto_name);
@@ -70,6 +71,7 @@ class Registry
 				$_param_full_type = implode('', $_param_full_type);
 				$_proto_types [] = trim($_param_full_type);
 				$_proto_names [] = trim($_param_name);
+				$_proto_argsindex[] = count($_proto_arguments);
 				$_proto_arguments[] = [
 					'group' 		 => trim($group),
 					'name' 			 => trim($_param_name),
@@ -92,6 +94,7 @@ class Registry
 				'is_const'	 => strstr($_proto_full_type, 'const') !== FALSE,
 				'is_pointer' => strstr($_proto_full_type, '*') !== FALSE,
 				'arguments'  => $_proto_arguments,
+				'argsindex'	 => $_proto_argsindex,
 				'arg_names'  => $_proto_names,
 				'arg_types'  => $_proto_types
 			];
