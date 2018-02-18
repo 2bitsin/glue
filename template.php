@@ -50,34 +50,15 @@ class Template
 		return array_map($rebase_, Template::reccursive_scandir_($dir));
 	}
 
-	protected function put_file($_destination, $_contents)
+	protected function put_file($_build_dir, $_destination, $_contents)
 	{
-		$the_dir = dirname($_destination);
+		$the_dir = dirname("$_build_dir/$_destination");
 		if (!file_exists($the_dir))
 			mkdir($the_dir, 0777, true);
-		file_put_contents($_destination, $_contents);
+		file_put_contents("$_build_dir/$_destination", $_contents);
+		$this->generated [] = $_destination;
 	}
 
-	public static function camel_case_split($text)
-	{
-		$last = null;
-		$curr = '';
-		$result = [];
-		foreach (str_split($text) as $char)
-		{
-			if (ctype_upper($char)
-			 && ctype_lower($last))
-			{
-				$result[] = $curr;
-				$curr = '';
-			}
-			$curr .= $char;
-			$last = $char;
-		}
-		if (strlen($curr) > 0)
-			$result[] = $curr;
-		return $result;
-	}
 
 	protected function instantiate_template($_source, $_data)
 	{
@@ -105,11 +86,14 @@ class Template
 				return $_var[0];
 			};
 			$_destination = preg_replace_callback('/\{(.*?)\}/', $_callback, $_source);
-			$this->put_file("$_build_dir/$_destination", $this->instantiate_template($_source, $_data));
+			$this->put_file($_build_dir, $_destination, $this->instantiate_template($_source, $_data));
 		}
 	}
+
+	public function files_produced() { return $this->generated; }
 
 	private $basedir = './';
 	private $entries = [];
 	private $fragments = [];
+	private $generated = [];
 };

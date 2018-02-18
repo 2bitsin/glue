@@ -2,10 +2,30 @@
 
 	class CppHelper
 	{
+		public static function camel_case_split($text)
+		{
+			$last = null;
+			$curr = '';
+			$result = [];
+			foreach (str_split($text) as $char)
+			{
+				if (ctype_upper($char)
+				 && ctype_lower($last))
+				{
+					$result[] = $curr;
+					$curr = '';
+				}
+				$curr .= $char;
+				$last = $char;
+			}
+			if (strlen($curr) > 0)
+				$result[] = $curr;
+			return $result;
+		}
 
 		public static function camel_skip_prefix($text)
 		{
-			$text = Template::camel_case_split($text);
+			$text = CppHelper::camel_case_split($text);
 			array_shift($text);
 			return implode('', $text);
 		}

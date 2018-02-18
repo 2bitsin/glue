@@ -29,37 +29,3 @@
 		['type' => 'const uvec4*', 'suffix' => '4uiv', 'count' => true, 'pass' => 'value_ptr(*value)']
 	];
 
-	if (!isset($what))
-		$what = 'decl';
-	foreach($G_unform_defs as $_args)
-	{
-		extract($_args, EXTR_OVERWRITE);
-		$api = 'glUniform' . $suffix;
-		if (!isset($protos[$api]))
-			continue;
-		$this->instantiate_fragment('uniform_api_vector_' . $what, $_args);
-	}
-	foreach($G_unform_defs as $_args)
-	{
-		extract($_args, EXTR_OVERWRITE);
-		$api = 'glProgramUniform' . $suffix;
-		if (!isset($protos[$api]))
-			continue;
-		$this->instantiate_fragment('uniform_api_dsa_vector_' . $what, $_args);
-	}
-
-	if ($what == 'decl')
-	{
-?> 
-			template<typename _Ctype, typename = std::enable_if_t<utility::has_data_and_size_v<_Ctype>>>
-			auto Uniform(uniform_location_t loc, const _Ctype& values) const
-			{
-				return Uniform(loc, (std::int32_t)utility::size(values), utility::data(values));
-			}
-			template<typename _Ctype, typename = std::enable_if_t<utility::has_data_and_size_v<_Ctype>>>
-			auto ProgramUniform(program_name_t id, uniform_location_t loc, const _Ctype& values) const
-			{
-				return ProgramUniform(id, loc, (std::int32_t)utility::size(values), utility::data(values));
-			}
-<?php
-	}

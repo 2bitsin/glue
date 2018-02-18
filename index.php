@@ -7,7 +7,7 @@
 	require_once 'registry.php';
 	require_once 'typedef.php';
 
-	$build_dir =  "./build";
+	$build_dir =  "./build/src";
 	system("rm -rf ${build_dir}");
 
 	$registry = new Registry($url_ogl);
@@ -16,11 +16,17 @@
 	$common_template = new Template("./templates/common");
 	$feature_template = new Template("./templates/feature");
 	$tests_template	= new Template("./templates/tests");
+	$makefiles_template	= new Template("./templates/makefiles");
 
 	$common_template->instantiate($build_dir, (array)$registry, compact('G_typedefs', 'registry'));
 	$tests_template->instantiate($build_dir, (array)$registry, compact('G_typedefs', 'registry'));
 	foreach ($registry->features as $feature)
 		$feature_template->instantiate ($build_dir, (array)$registry, compact('G_typedefs', 'registry', 'feature'), $feature);
+
+	$libfiles = array_merge($common_template->files_produced(), $feature_template->files_produced());
+	$testfiles = $tests_template->files_produced();
+
+	$makefiles_template->instantiate($build_dir, compact ('libfiles', 'testfiles'));
 
 	mkdir($build_dir . '/cmake');
 	chdir($build_dir . '/cmake');

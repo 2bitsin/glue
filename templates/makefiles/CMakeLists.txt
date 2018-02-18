@@ -11,12 +11,9 @@ include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-file(GLOB_RECURSE GLUE_SOURCE "." "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
-file(GLOB_RECURSE GLUE_HEADER "." "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
-file(GLOB_RECURSE GLUE_TEST_SOURCE "." "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.*")
 
-add_library(glue ${GLUE_SOURCE} ${GLUE_HEADER})
-add_executable(glue_tests ${GLUE_TEST_SOURCE})
+add_library(glue <?= implode(' ', $libfiles) ?>)
+add_executable(glue_tests <?= implode(' ', $testfiles) ?>)
 target_link_libraries(glue_tests glue)
 
 install(TARGETS glue glue_tests EXPORT glue 

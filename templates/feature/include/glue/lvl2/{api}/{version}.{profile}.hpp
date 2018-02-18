@@ -17,10 +17,6 @@ namespace glue::lvl2
 			api() = default;
 <?php
 	//$this->instantiate_fragment('uniform_api', compact('protos'), ['what'=>'decl']);
-			foreach($protos as $name => $proto)
-			{
-				echo CppHelper::modernize($proto);
-			}
 ?>
 		public:
 		};
