@@ -15,6 +15,7 @@
 	$G_typedefs = generate_types_table();
 	$common_template = new Template("./templates/common");
 	$feature_template = new Template("./templates/feature");
+	$extension_template = new Template("./templates/extension");
 	$tests_template	= new Template("./templates/tests");
 	$makefiles_template	= new Template("./templates/makefiles");
 
