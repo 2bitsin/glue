@@ -7,14 +7,15 @@ else ()
     set (PROJECTNAME_ARCHITECTURE "x86")
 endif ()
 
+find_package(SDL2 REQUIRED)
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(glue <?= implode(' ', $libfiles) ?>)
+add_library(glue <?= implode(' ', $libfiles) ?> ${SDL2_INCLUDE_DIR})
 add_executable(glue_tests <?= implode(' ', $testfiles) ?>)
-target_link_libraries(glue_tests glue)
+target_link_libraries(glue_tests glue ${SDL2_LIBRARY})
 
 install(TARGETS glue glue_tests EXPORT glue 
   RUNTIME DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/install/bin/${PROJECTNAME_ARCHITECTURE}"

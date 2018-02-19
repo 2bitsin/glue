@@ -17,19 +17,26 @@ namespace glue
 #if GLUE_USES_GLM
 	using namespace glm;
 #else
+
 	template <typename T, std::size_t N>
-	struct vector_impl:
-		vector_impl<T, 4u>
+	struct indexable_impl
 	{
 		auto&& operator [] (std::size_t i) noexcept { return ((T*)this)[i] ; } ;
 		auto&& operator [] (std::size_t i) const noexcept { return ((const T*)this)[i] ; } ;
+	};
+
+	template <typename T, std::size_t N>
+	struct vector_impl:
+		vector_impl<T, 4u>,
+		indexable_impl<T, N>
+	{
 		T _[N-4u];
 	};
 
-	template <typename T> struct vector_impl<T, 1u> { T x; };
-	template <typename T> struct vector_impl<T, 2u>: vector_impl<T, 1u> { T y; };
-	template <typename T> struct vector_impl<T, 3u>: vector_impl<T, 2u> { T z; };
-	template <typename T> struct vector_impl<T, 4u>: vector_impl<T, 3u> { T w; };
+	template <typename T> struct vector_impl<T, 1u>: indexable_impl<T, 1u> { T x; };
+	template <typename T> struct vector_impl<T, 2u>: vector_impl<T, 1u>, indexable_impl<T, 2u> { T y; };
+	template <typename T> struct vector_impl<T, 3u>: vector_impl<T, 2u>, indexable_impl<T, 3u> { T z; };
+	template <typename T> struct vector_impl<T, 4u>: vector_impl<T, 3u>, indexable_impl<T, 4u> { T w; };
 
 	template <typename T, std::size_t M, std::size_t N>
 	using matrix_impl = vector_impl<T, N>[M];
