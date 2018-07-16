@@ -1,4 +1,7 @@
 <?php
+ 	array_shift($argv);
+	$cmdline_args = implode($argv, ' ');
+
 	$url_ogl = "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/master/xml/gl.xml";
 	$url_glx = "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/master/xml/glx.xml";
 	$url_wgl = "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/master/xml/wgl.xml";
@@ -33,7 +36,7 @@
 	chdir($build_dir . '/cmake');
 
 	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-		system('cmake ../ -G "Visual Studio 15 2017 Win64" && MSBuild ALL_BUILD.vcxproj && MSBuild INSTALL.vcxproj');
+		system('cmake ../ -G "Visual Studio 15 2017 Win64" '.$cmdline_args.' && MSBuild ALL_BUILD.vcxproj && MSBuild INSTALL.vcxproj');
 		chdir('../install/bin/x64/');
 		system('glue_tests.exe');
 	} else {

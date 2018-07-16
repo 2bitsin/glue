@@ -8,7 +8,12 @@ else ()
 endif ()
 
 find_package(SDL2 REQUIRED)
+
+find_path(SDL2_INCLUDE_DIR SDL2/SDL.h)
+find_library(SDL2_LIBRARY SDL2)
+
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/include")
+include_directories ("${SDL2_INCLUDE_DIR}")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
